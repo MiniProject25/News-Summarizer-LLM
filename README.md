@@ -13,7 +13,7 @@ A machine learning system for analyzing news articles across the political spect
 - [ ] Set up Google Colab
 - [x] Install required libraries (TensorFlow, Transformers, datasets, evaluate)
 - [x] Set up version control (GitHub repository)
-- [ ] Configure Jupyter Notebook environment
+- [x] Configure Jupyter Notebook environment
 
 #### 1.2 Dataset Collection & Preparation
 ✅ **Status**: In Progress 
