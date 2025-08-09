@@ -17,7 +17,15 @@ Algorithm for Preprocessing
 4. Append the dataframe to a list
 5. concatenate all the dataframes into a single dataframe
 6. Clean the texts of each column (removing whitespaces, links, HTML tags, newline characters, etc)
-7. We tokenize the input and check the token count for a row. If it is greater than 1000, then we create chunks.
-8. Lastly, convert the cleaned combined DataFrame into a Hugging face dataset.
+7. We tokenize the input (content column) and check the token count for a row. If it is greater than 512, then we create chunks.
+8. Lastly, convert the cleaned combined DataFrame.
 9. Create a train set and test set.
 10. Save it in the disk.
+
+Q. How is BART (Bi-directional and Auto-Regressive Transformer) different to ChatGPT?
+A: BART is considered as a model that uses both the strengths of GPT (Decoder-only model) and BERT (Encoder-only model). Bart is also considered a Seq2Seq model that takes an input and generates an output. What is a Decoder-Only model you ask? It is a model that generates large piece of text from scratch. It is good for text-summarization, story-telling, etc. What about an Encoder-Only model? It is a model that is good at comprehension but doesn't generate long outputs word-by-word. It is used for Classification, sentiment analysis, embeddings, etc.
+
+Footnote:
+* GPT = Generative Pre-Trained Transformer
+* BERT = Bi-directional Encoder Representations from Transformers
+
