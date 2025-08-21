@@ -37,9 +37,9 @@
 - [x] Save processed datasets for reproducibility  
 
 ### 2.3 Fine-Tuning
-- [ ] Define training parameters (batch size, learning rate, number of epochs, max sequence length)  
-- [ ] Implement training with Hugging Face `Seq2SeqTrainer`  
-- [ ] Integrate evaluation during training (ROUGE, BERTScore)  
+- [x] Define training parameters (batch size, learning rate, number of epochs, max sequence length)  
+- [x] Implement training with Hugging Face `Seq2SeqTrainer`  
+- [x] Integrate evaluation during training (ROUGE, BERTScore)  
 - [ ] Save the fine-tuned model and tokenizer locally  
 
 ---
