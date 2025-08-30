@@ -1,6 +1,6 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
 import { FaClock, FaEye } from "react-icons/fa";
+import { useState } from "react";
 
 // Utility to format "time ago"
 function timeAgo(date) {
@@ -29,10 +29,29 @@ export default function NewsCard({
     sources = [],
 }) {
     const navigate = useNavigate();
+    const [localViews, setLocalViews] = useState(views);
+
+    // Handle card click: increment views in backend & update locally
+    const handleCardClick = async () => {
+        try {
+            const res = await fetch(
+                `http://localhost:8000/articles/${article_id}/increment_view`,
+                { method: "POST" }
+            );
+            if (res.ok) {
+                const data = await res.json();
+                setLocalViews(data.views); // update frontend immediately
+            }
+        } catch (err) {
+            console.error("Failed to increment views:", err);
+        }
+
+        navigate(`/article/${article_id}`);
+    };
 
     return (
         <div
-            onClick={() => navigate(`/article/${article_id}`)}
+            onClick={handleCardClick}
             className="max-w-sm rounded-2xl shadow-md border border-gray-300 bg-white overflow-hidden flex flex-col 
                        cursor-pointer transform transition-transform duration-200 hover:scale-105"
         >
@@ -54,7 +73,7 @@ export default function NewsCard({
                             {category || "General"}
                         </span>
                         <span className="flex items-center gap-1 text-[10px] text-gray-200 ml-auto">
-                            <FaEye className="h-3 w-3" /> {views}
+                            <FaEye className="h-3 w-3" /> {localViews}
                         </span>
                         <span className="flex items-center gap-1 text-[10px] text-gray-200">
                             <FaClock className="h-3 w-3" /> {timeAgo(created_at)}
@@ -89,29 +108,31 @@ export default function NewsCard({
 
                     {/* Sources */}
                     <div className="mt-3">
-                        <p className="text-xs text-gray-600">Sources:</p>
+                        <p className="text-xs font-semibold text-gray-700 mb-1">Sources:</p>
                         {sources.length === 0 ? (
                             <span className="text-xs text-gray-400">(No sources added yet)</span>
                         ) : (
                             <p className="text-xs text-gray-700 truncate">
-                                {sources.map((src, i) => (
-                                    <a
-                                        key={i}
-                                        href={src.source_url}
-                                        target="_blank"
-                                        rel="noreferrer"
-                                        onClick={(e) => e.stopPropagation()} // prevent card navigation
-                                        className="text-gray-700 hover:underline"
-                                    >
-                                        {src.source_name}
-                                    </a>
-                                )).reduce((prev, curr) => [prev, ", ", curr])}
+                                {sources
+                                    .map((src, i) => (
+                                        <a
+                                            key={i}
+                                            href={src.source_url}
+                                            target="_blank"
+                                            rel="noreferrer"
+                                            onClick={(e) => e.stopPropagation()} // prevent card navigation
+                                            className="text-gray-600 hover:underline"
+                                        >
+                                            {src.source_name}
+                                        </a>
+                                    ))
+                                    .reduce((prev, curr) => [prev, ", ", curr])}
                                 {sources.length > 3 && " .............."}
                             </p>
                         )}
                     </div>
                 </div>
             </div>
-        </div >
+        </div>
     );
 }

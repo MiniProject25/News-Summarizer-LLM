@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter,HTTPException
 from sqlalchemy.orm import Session
 from db_connection import SessionLocal, Article, ArticleSchema
 
@@ -28,3 +28,19 @@ def get_articles():
 
     db.close()
     return result
+
+@router.post("/articles/{article_id}/increment_view")
+def increment_view(article_id: int):
+    db: Session = SessionLocal()
+    article = db.query(Article).filter(Article.article_id == article_id).first()
+    if not article:
+        db.close()
+        raise HTTPException(status_code=404, detail="Article not found")
+    
+    # Increment the views
+    article.views += 1
+    db.commit()
+    db.refresh(article)
+    db.close()
+
+    return {"views": article.views}
