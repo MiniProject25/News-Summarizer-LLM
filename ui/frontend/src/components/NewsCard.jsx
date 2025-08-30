@@ -126,8 +126,8 @@ export default function NewsCard({
                                             {src.source_name}
                                         </a>
                                     ))
-                                    .reduce((prev, curr) => [prev, ", ", curr])}
-                                {sources.length > 3 && " .............."}
+                                    .reduce((prev, curr) => [prev, ", ", curr])
+                                }
                             </p>
                         )}
                     </div>

@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 
-const Categories = () => {
+const Categories = ({ activeCategory, setActiveCategory }) => {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [activeCategory, setActiveCategory] = useState("All");
   const [scrollDir, setScrollDir] = useState("up");
 
   useEffect(() => {

@@ -1,15 +1,35 @@
-from fastapi import APIRouter,HTTPException
+from fastapi import APIRouter,HTTPException, Query
 from sqlalchemy.orm import Session
+from sqlalchemy import or_
 from db_connection import SessionLocal, Article, ArticleSchema
 
 router = APIRouter()
 
 @router.get("/articles/", response_model=list[ArticleSchema])
-def get_articles():
+def get_articles(
+    search: str = Query(None, description="Search text"),
+    category: str = Query(None, description="Filter by category"),
+):
     db: Session = SessionLocal()
-    articles = db.query(Article).all()
+    query = db.query(Article)
 
-    # convert SQLAlchemy objects to dict + attach references
+    # ✅ filter by category
+    if category and category.lower() != "all":
+        query = query.filter(Article.category == category)
+
+    # ✅ search in title, summary, or sources
+    if search:
+        search_term = f"%{search.lower()}%"
+        query = query.filter(
+            or_(
+                Article.title.ilike(search_term),
+                Article.summary.ilike(search_term),
+                Article.category.ilike(search_term),
+            )
+        )
+
+    articles = query.order_by(Article.created_at.desc()).all()
+
     result = []
     for a in articles:
         result.append({
@@ -23,24 +43,8 @@ def get_articles():
             "center_bias": a.center_bias,
             "created_at": a.created_at,
             "views": a.views,
-            "sources": a.references   # ✅ automatically fetched
+            "sources": a.references
         })
 
     db.close()
     return result
-
-@router.post("/articles/{article_id}/increment_view")
-def increment_view(article_id: int):
-    db: Session = SessionLocal()
-    article = db.query(Article).filter(Article.article_id == article_id).first()
-    if not article:
-        db.close()
-        raise HTTPException(status_code=404, detail="Article not found")
-    
-    # Increment the views
-    article.views += 1
-    db.commit()
-    db.refresh(article)
-    db.close()
-
-    return {"views": article.views}

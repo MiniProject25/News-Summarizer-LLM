@@ -1,13 +1,13 @@
 import { NavLink, Link } from 'react-router-dom'
 import SearchBox from './SearchBox'
 
-const nav = [
-  { to: '/', label: 'Home' },
-  { to: '/about', label: 'About Us' },
-  { to: '/contact', label: 'Contact' }
-]
+export default function Navbar({ onSearch }) {
+  const nav = [
+    { to: '/', label: 'Home' },
+    { to: '/about', label: 'About Us' },
+    { to: '/contact', label: 'Contact' }
+  ]
 
-export default function Navbar() {
   return (
     <header className="fixed top-0 left-0 w-full bg-white shadow-md z-50">
       <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
@@ -33,8 +33,8 @@ export default function Navbar() {
           ))}
         </nav>
 
-        {/* Search Bar */}
-        <SearchBox />
+        {/* ✅ Pass down onSearch */}
+        <SearchBox onSearch={onSearch} />
       </div>
     </header>
   )
