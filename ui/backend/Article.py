@@ -8,5 +8,23 @@ router = APIRouter()
 def get_articles():
     db: Session = SessionLocal()
     articles = db.query(Article).all()
+
+    # convert SQLAlchemy objects to dict + attach references
+    result = []
+    for a in articles:
+        result.append({
+            "article_id": a.article_id,
+            "title": a.title,
+            "summary": a.summary,
+            "category": a.category,
+            "image_url": a.image_url,
+            "left_bias": a.left_bias,
+            "right_bias": a.right_bias,
+            "center_bias": a.center_bias,
+            "created_at": a.created_at,
+            "views": a.views,
+            "sources": a.references   # ✅ automatically fetched
+        })
+
     db.close()
-    return articles
+    return result

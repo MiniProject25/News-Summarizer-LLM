@@ -6,10 +6,9 @@ export default function Home() {
   const [articles, setArticles] = useState([]);
 
   useEffect(() => {
-    fetch("/api/articles/")
-      .then((res) => res.json())
-      .then((data) => setArticles(data))
-      .catch((err) => console.error("Error fetching articles:", err));
+    fetch("http://localhost:8000/articles/")
+      .then(res => res.json())
+      .then(data => setArticles(data));
   }, []);
 
   return (

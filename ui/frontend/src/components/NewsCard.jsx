@@ -74,7 +74,7 @@ export default function NewsCard({
                 <div className="mt-auto">
                     {/* Bias bar */}
                     <div className="mt-3">
-                        <p className="text-xs font-semibold text-gray-700 mb-1">Bias</p>
+                        <p className="text-xs font-semibold text-gray-700 mb-1">Bias:</p>
                         <div className="flex text-xs justify-between text-gray-600 mb-1">
                             <span className="text-red-600">Left Wing {left_bias || 0}%</span>
                             <span className="text-green-600">Centric {center_bias || 0}%</span>
@@ -89,25 +89,26 @@ export default function NewsCard({
 
                     {/* Sources */}
                     <div className="mt-3">
-                        <p className="text-xs text-gray-600">Also reported by:</p>
-                        <div className="flex gap-2 mt-1 flex-wrap">
-                            {sources.length === 0 ? (
-                                <span className="text-xs text-gray-400">(No sources added yet)</span>
-                            ) : (
-                                sources.map((src, i) => (
+                        <p className="text-xs text-gray-600">Sources:</p>
+                        {sources.length === 0 ? (
+                            <span className="text-xs text-gray-400">(No sources added yet)</span>
+                        ) : (
+                            <p className="text-xs text-gray-700 truncate">
+                                {sources.map((src, i) => (
                                     <a
                                         key={i}
-                                        href={src.url}
+                                        href={src.source_url}
                                         target="_blank"
                                         rel="noreferrer"
-                                        className="text-xs font-medium text-blue-600 underline"
-                                        onClick={(e) => e.stopPropagation()} // prevent navigation when clicking source
+                                        onClick={(e) => e.stopPropagation()} // prevent card navigation
+                                        className="text-gray-700 hover:underline"
                                     >
-                                        {src.name}
+                                        {src.source_name}
                                     </a>
-                                ))
-                            )}
-                        </div>
+                                )).reduce((prev, curr) => [prev, ", ", curr])}
+                                {sources.length > 3 && " .............."}
+                            </p>
+                        )}
                     </div>
                 </div>
             </div>
