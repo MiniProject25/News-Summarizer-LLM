@@ -33,7 +33,7 @@ export default function Navbar({ onSearch }) {
           ))}
         </nav>
 
-        {/* ✅ Pass down onSearch */}
+        {/* Pass down onSearch */}
         <SearchBox onSearch={onSearch} />
       </div>
     </header>

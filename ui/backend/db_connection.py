@@ -66,7 +66,7 @@ class ArticleSchema(BaseModel):
     center_bias: Optional[int] = None
     created_at: datetime
     views: int
-    sources: List[ArticleReferenceSchema] = []   # ✅ include sources
+    sources: List[ArticleReferenceSchema] = []  
 
     class Config:
         from_attributes = True

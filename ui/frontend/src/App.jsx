@@ -11,7 +11,6 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-white text-gray-900">
-      {/* ✅ give Navbar a way to set searchQuery */}
       <Navbar onSearch={setSearchQuery} />
       <main className="p-6 mt-[50px]">
         <Routes>
