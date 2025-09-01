@@ -87,7 +87,7 @@ export default function NewsCard({
 
             {/* Body (flex column so bias stays at bottom) */}
             <div className="p-3 flex flex-col flex-1">
-                <p className="text-sm text-gray-600 line-clamp-2">{summary}</p>
+                <p className="text-sm text-gray-600 line-clamp-1">{summary}</p>
 
                 {/* Bias + Sources pinned at bottom */}
                 <div className="mt-auto">
