@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const Categories = ({ activeCategory, setActiveCategory }) => {
   const [categories, setCategories] = useState([]);
@@ -44,20 +44,18 @@ const Categories = ({ activeCategory, setActiveCategory }) => {
 
   return (
     <div
-      className={`sticky top-[64px] z-40 transition-transform duration-300 ${
-        scrollDir === "down" ? "-translate-y-full" : "translate-y-0"
-      }`}
+      className={`sticky top-[64px] z-40 transition-transform duration-300 ${scrollDir === "down" ? "-translate-y-full" : "translate-y-0"
+        }`}
     >
       <div className="relative">
         {/* Scrollable category bar */}
         <div className="flex gap-4 px-5 py-2 border-b border-gray-300 bg-white overflow-x-auto whitespace-nowrap hide-scrollbar">
           <button
             className={`px-4 py-1.5 rounded-[15px] text-sm font-medium transition
-            ${
-              activeCategory === "All"
+            ${activeCategory === "All"
                 ? "bg-black text-white font-bold"
                 : "bg-transparent text-gray-800 border border-gray-300 hover:bg-gray-100"
-            }`}
+              }`}
             onClick={() => setActiveCategory("All")}
           >
             All
@@ -68,11 +66,10 @@ const Categories = ({ activeCategory, setActiveCategory }) => {
               key={cat}
               onClick={() => setActiveCategory(cat)}
               className={`px-4 py-1.5 rounded-[15px] text-sm font-medium transition
-              ${
-                activeCategory === cat
+              ${activeCategory === cat
                   ? "bg-black text-white font-bold"
                   : "bg-transparent text-gray-800 border border-gray-300 hover:bg-gray-100"
-              }`}
+                }`}
             >
               {cat}
             </button>

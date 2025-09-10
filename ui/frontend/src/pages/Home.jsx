@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Category from "../components/category.jsx";
 import NewsCard from "../components/NewsCard.jsx";
 
@@ -53,7 +53,7 @@ export default function Home({ searchQuery }) {
 
         {/* Fade left */}
         {/* <div className="pointer-events-none absolute left-0 top-0 h-full w-12 bg-gradient-to-r from-white to-transparent" /> */}
-        
+
         {/* Fade right */}
         <div className="pointer-events-none absolute right-0 top-0 h-full w-12 bg-gradient-to-l from-white to-transparent" />
       </div>
