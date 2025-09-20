@@ -1,5 +1,5 @@
 # List of Pre-Existing LLM's to fine-tune
-----> BART (Facebook) - facebook/bart-large-cnn
+----> BART (Facebook) - facebook/bart-base-cnn
 ----> T5 (Google) - t5-base/t5-small
 
 # Data Preprocessing Pipeline
@@ -12,7 +12,7 @@
 
 # Algorithm for Preprocessing
 1. Iterate through every csv file in the directory (read it as a dataframe)
-2. Preserve only [Content, Summary]
+2. Preserve only [Content, Summary] 
 3. Drop empty rows
 4. Append the dataframe to a list
 5. concatenate all the dataframes into a single dataframe
@@ -24,6 +24,12 @@
 
 Q. How is BART (Bi-directional and Auto-Regressive Transformer) different to ChatGPT?
 A: BART is considered as a model that uses both the strengths of GPT (Decoder-only model) and BERT (Encoder-only model). Bart is also considered a Seq2Seq model that takes an input and generates an output. What is a Decoder-Only model you ask? It is a model that generates large piece of text from scratch. It is good for text-summarization, story-telling, etc. What about an Encoder-Only model? It is a model that is good at comprehension but doesn't generate long outputs word-by-word. It is used for Classification, sentiment analysis, embeddings, etc.
+
+Q. Bart Tokenizer. What is it?
+A: Breaking text down into smaller units called tokens. They can be words, characters or subwords. BART uses byte-pair encoding (specifically RobertaTokenizer in the hood). 
+BPE is a subword tokenizer:
+- Rare/unseen words get broken into smaller, known subwords.
+- Frequent words remain whole.
 
 Footnote:
 * GPT = Generative Pre-Trained Transformer
