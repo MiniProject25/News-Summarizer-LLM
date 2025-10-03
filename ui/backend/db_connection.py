@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine, Column, Integer, String, Text, TIMESTAMP, Date, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
-from datetime import datetime
+from datetime import datetime, date
 from pydantic import BaseModel
 from typing import Optional, List
 
@@ -12,9 +12,11 @@ engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False)
 Base = declarative_base()
 
+
 # ---------------- SQLALCHEMY MODELS ----------------
 class Article(Base):
     __tablename__ = "articles"
+
     article_id = Column(Integer, primary_key=True, index=True)
     title = Column(Text, nullable=False)
     summary = Column(Text)
@@ -27,11 +29,12 @@ class Article(Base):
     views = Column(Integer, default=0)
 
     # relationship with references
-    references = relationship("ArticleReference", back_populates="article")
+    references = relationship("ArticleReference", back_populates="article", cascade="all, delete-orphan")
 
 
 class ArticleReference(Base):
     __tablename__ = "article_references"
+
     reference_id = Column(Integer, primary_key=True, index=True)
     article_id = Column(Integer, ForeignKey("articles.article_id"), nullable=False)
     source_url = Column(Text)
@@ -45,14 +48,13 @@ class ArticleReference(Base):
 # ---------------- Pydantic SCHEMAS ----------------
 class ArticleReferenceSchema(BaseModel):
     reference_id: int
-    article_id: int
     source_url: Optional[str] = None
-    published_date: Optional[datetime] = None
+    published_date: Optional[date] = None   # ✅ match DB column type
     source_name: Optional[str] = None
     bias: Optional[str] = None
 
     class Config:
-        from_attributes = True
+        from_attributes = True   # ✅ replaces orm_mode
 
 
 class ArticleSchema(BaseModel):
@@ -66,7 +68,12 @@ class ArticleSchema(BaseModel):
     center_bias: Optional[int] = None
     created_at: datetime
     views: int
-    sources: List[ArticleReferenceSchema] = []  
+    sources: List[ArticleReferenceSchema] = []   # ✅ nested schema for references
 
     class Config:
-        from_attributes = True
+        from_attributes = True   # ✅ replaces orm_mode
+
+
+# ---------------- (Optional) CREATE TABLES ----------------
+# Uncomment if you want FastAPI to auto-create DB tables on startup
+# Base.metadata.create_all(bind=engine)
