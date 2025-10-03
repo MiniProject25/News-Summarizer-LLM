@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+@layer utilities {
+  .hide-scrollbar::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
+  }
+  .hide-scrollbar::-webkit-scrollbar-thumb {
+    background: transparent;
+    border: none;
+  }
+  .hide-scrollbar {
+    -ms-overflow-style: none !important; /* IE/Edge */
+    scrollbar-width: none !important;    /* Firefox */
+    overflow: -moz-scrollbars-none;      /* legacy Firefox */
+  }
+}
+
+html{
+  zoom:1.2;
+}
