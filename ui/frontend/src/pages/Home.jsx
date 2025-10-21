@@ -37,7 +37,7 @@ export default function Home({ searchQuery }) {
 
   return (
     <div>
-      <Category activeCategory={activeCategory} setActiveCategory={setActiveCategory} />
+      {/* <Category activeCategory={activeCategory} setActiveCategory={setActiveCategory} /> */}
       {/* Trending Section */}
       <h2 className="text-xl font-bold flex items-center">
         <span className="text-red-500 mr-2">🔥</span> Trending Now
@@ -59,7 +59,7 @@ export default function Home({ searchQuery }) {
       </div>
 
       {/* Today Section */}
-      <h2 className="text-xl font-bold mt-8 mb-4">Today's News Summary</h2>
+      <h2 className="text-xl font-bold mt-8 mb-4">Latest News Summaries</h2>
       <div className="grid mt-4 gap-6 md:grid-cols-2 lg:grid-cols-4">
         {articles.map((a) => (
           <NewsCard key={a.article_id} {...a} />
