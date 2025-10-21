@@ -22,6 +22,8 @@
 9. Create a train set and test set.
 10. Save it in the disk.
 
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+
 Q. How is BART (Bi-directional and Auto-Regressive Transformer) different to ChatGPT?
 A: BART is considered as a model that uses both the strengths of GPT (Decoder-only model) and BERT (Encoder-only model). Bart is also considered a Seq2Seq model that takes an input and generates an output. What is a Decoder-Only model you ask? It is a model that generates large piece of text from scratch. It is good for text-summarization, story-telling, etc. What about an Encoder-Only model? It is a model that is good at comprehension but doesn't generate long outputs word-by-word. It is used for Classification, sentiment analysis, embeddings, etc.
 
@@ -102,4 +104,69 @@ Footnote:
     - When you're training a model, it computes the activation value for each layer and stores them in memory so they can be used during the backward pass to compute the gradient. This is called **Forward Pass**.
     - During **Backward Pass**, the model uses those stored values to compute gradients for each parameter.
 
-    - What gradient checkpoint does, is instead of keeping all those values in the memory, it forgets some of them and recomputes them on the fly during backpass. This way we're saving some GPU VRAM, but increasing the computation time, which is the trade-off in this case.   
+    - What gradient checkpoint does, is instead of keeping all those values in the memory.
+    y, it forgets some of them and recomputes them on the fly during backpass. This way we're saving some GPU VRAM, but increasing the computation time, which is the trade-off in this case.   
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+# Building the RAG Pipeline 
+
+
+# Workflow of the final project Implementation in accordance with the integration of the RAG Pipeline
+1. User enters the Homepage of the Website.
+2. User views list of daily articles / trending articles.
+    - Articles are displayed with metadata such as,
+        - Title, 
+        - Source (Eg. BBC, IE),
+        - Time of Publishing
+3. User clicks on any article.
+4. Article page must display,
+    - Short LLM-generated summary.
+    - Analytics and Insights (Left, Center, Right)
+    - Metadata: Source, bias
+5. Below the main LLM-generated summary,
+    - Similar/Related articles retrieved using FAISS (Facebook AI Similarity Search).
+    - Each article when clicked will display what's mentioned above (will have their own short summary along with related articles).    
+
+# Prototype System Architecture
+## Frontend (NextJS)
+1. / -> Displays the Home Page
+2. /article/:id -> Displays the article detail page (Described in detail above).
+3. Articles must be fetched via an API call to the FastAPI Backend.
+## Backend (FastAPI, MongoDB)
+1. Scraping service to fetch news articles from multiple sources 
+    - store them in a structured format within a database (Postgres)
+2. Summarizer service
+    - Calls the fine-tuned BART/T5/any-other-open-source-LLM to generate summary
+    - stores the summary in the database.
+3. RAG Service
+    - Embeds article content using Sentence transformers or OpenAI Embeddings.
+    - Stores the embedding in FAISS Index.
+    - Given an article, generate some k related articles from the FAISS DB.
+
+# News Scraping Pipeline
+## 2 main approaches
+1. Scraping per Website
+2. News APIs / RSS Feeds
+Best way is to use both. RSS Feeds generally and scraping to cover up sources that weren't covered by the News APIs. 
+
+- To check for Bias, run it through "AllSides".
+
+# Best way to handle an article from multiple sources.
+## Option 1: 
+- Take the first source that is scraped, summarize it using our fine-tuned BART, and keep it as the main summary. Additional sources only update bias counts and references.
+## Option 2:
+- Concatenate the body of the articles, summarize it using the fine-tuned BART. 
+## Option 3:
+- Choose the "best" article. Best depends on article_length, readability. Must implement heuristics to identify parameter like readability.
+
+For now, we are going to start with Option 1. Maybe we move to Option 2 at a later point in time.
+
+# Web-scraping as a periodic job
+## 2 main approaches
+1. Backend endpoint + scheduler:
+    Write a /scrape endpoint in FastAPI.
+    Use an external scheduler like cron (Linux) or Windows Task Scheduler, or a cloud job (Heroku Scheduler, GitHub Actions, etc.) to hit that endpoint periodically.
+2. Background task in FastAPI:
+    Use APScheduler or Celery inside your FastAPI backend to run scraping jobs periodically.
+    This avoids external cron but adds dependency management.
