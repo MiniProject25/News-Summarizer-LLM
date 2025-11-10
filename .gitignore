@@ -2,3 +2,9 @@ data/
 models
 venv/
 outputs/
+
+/RAG/.venv
+/RAG/.env
+/RAG/app/chroma_db
+/RAG/app/__pycache__
+/RAG/chroma_db

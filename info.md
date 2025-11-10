@@ -170,3 +170,7 @@ For now, we are going to start with Option 1. Maybe we move to Option 2 at a lat
 2. Background task in FastAPI:
     Use APScheduler or Celery inside your FastAPI backend to run scraping jobs periodically.
     This avoids external cron but adds dependency management.
+
+# Understanding Similarity and Factuality while summary generation
+
+# Understanding the working of the RAG Pipeline
