@@ -29,7 +29,7 @@ async def embed(req: EmbedRequest):
     """
     logging.warning("ENTERING **/EMBED ROUTE**")
     try:    
-        embed_article(req.id, req.content, req.title, req.url, req.category, req.date)
+        embed_article(req.id, req.content, req.title, req.category, req.date)
         return {"status": "stored"}
 
     except Exception as e:

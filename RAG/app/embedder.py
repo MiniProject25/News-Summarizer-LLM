@@ -16,7 +16,7 @@ collection = vector_store.get_or_create_collection(
 def embed_text(text: str):
     return model.encode(text).tolist()
 
-def embed_article(article_id: int, content: str, title: str, url: str, category: str = None, date: str = None):
+def embed_article(article_id: int, content: str, title: str, category: str = None, date: str = None):
     logging.warning("ENTERING **EMBED_ARTICLE**")
     try:
         if not content or not content.strip():
